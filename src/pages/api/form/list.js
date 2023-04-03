@@ -1,20 +1,19 @@
-import client from "@/db";
+import { client } from "@/db";
 import { ObjectId } from "mongodb";
 
-const db = client.db("test");
+const db = client.db("form");
 
 export default async function handler(req, res) {
   try {
     switch (req.method) {
       case "GET":
-        const result = await db.collection("test").find().toArray();
-        console.log(result);
+        const result = await db.collection("list").find().toArray();
         res.status(200).json(result);
         break;
       case "PUT":
         const data = req.body;
         try {
-          const collection = db.collection("test");
+          const collection = db.collection("list");
 
           // 找到所有不在傳入陣列中的項目，將它們刪除
           const existingItems = await collection.find().toArray();
@@ -53,6 +52,8 @@ export default async function handler(req, res) {
           res.status(400).json({ error: e.message });
         }
         break;
+      default:
+        res.status(400).json({ error: "not found" });
     }
   } catch (e) {
     res.status(400).json({ error: e.message });
