@@ -38,7 +38,7 @@ const FIELD_TYPES = [
 export default function FormList({ formList = [], htmlList = [] }) {
   return (
     <Fragment>
-      <h2>Canvas測試</h2>
+      <h2>圖片快速裁切</h2>
     </Fragment>
   );
 }
