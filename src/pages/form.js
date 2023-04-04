@@ -36,8 +36,8 @@ const FIELD_TYPES = [
 ];
 
 function DynamicField(props = {}) {
-  const { value, onChange, fieldType, name } = props;
-  if (fieldType === "select") {
+  const { value, onChange, fieldtype, name } = props;
+  if (fieldtype === "select") {
     return (
       <Select
         {...props}
@@ -69,7 +69,7 @@ function DynamicField(props = {}) {
         ]}
       />
     );
-  } else if (fieldType === "radio") {
+  } else if (fieldtype === "radio") {
     return (
       <Radio.Group
         {...props}
@@ -86,7 +86,7 @@ function DynamicField(props = {}) {
         <Radio value={2}>B</Radio> */}
       </Radio.Group>
     );
-  } else if (fieldType === "checkbox") {
+  } else if (fieldtype === "checkbox") {
     return (
       <Checkbox
         {...props}
@@ -128,7 +128,7 @@ function BlurInput(props = {}) {
     />
   );
 }
-export function Main({ formList = [], htmlList = [] }) {
+export default function FormList({ formList = [], htmlList = [] }) {
   const [list, setList] = useState(formList);
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
@@ -163,7 +163,7 @@ export function Main({ formList = [], htmlList = [] }) {
     onUpdate(newList);
   }
 
-  function onAddField(form, fieldType = "input") {
+  function onAddField(form, fieldtype = "input") {
     const newList = list.reduce((prev, curr) => {
       if (form.key === curr.key) {
         return [
@@ -175,7 +175,7 @@ export function Main({ formList = [], htmlList = [] }) {
               {
                 key: uuid(),
                 name: `欄位名稱-${curr?.fields?.length + 1}`,
-                fieldType,
+                fieldtype,
               },
             ],
           },
@@ -429,5 +429,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
-export default Main;
