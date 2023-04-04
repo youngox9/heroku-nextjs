@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-
+import Link from "next/link";
 import { Button, Menu } from "antd";
 import {
   MailOutlined,
@@ -46,8 +46,13 @@ export default function Layout(props) {
           theme="dark"
           // inlineCollapsed={collapsed}
         >
-          <Menu.Item icon={<AppstoreOutlined />}>追蹤碼測試</Menu.Item>
-          <Menu.Item icon={<AppstoreOutlined />}>追蹤表單測試</Menu.Item>
+          <Menu.Item icon={<AppstoreOutlined />}>
+            <Link href={"/"}>追蹤碼測試</Link>
+          </Menu.Item>
+          <Menu.Item icon={<AppstoreOutlined />}>
+            {" "}
+            <Link href={"/form"}>表單測試</Link>
+          </Menu.Item>
         </Menu>
       </div>
     </Fragment>

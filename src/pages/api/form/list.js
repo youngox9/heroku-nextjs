@@ -41,7 +41,7 @@ export default async function handler(req, res) {
               }
             } else {
               // 沒有 _id，不允許插入
-              console.log("Skipping item without _id:", item);
+
               await collection.insertOne({ ...item });
             }
           }

@@ -13,8 +13,13 @@ export const client = new MongoClient(uri, {
 
 export async function getList() {
   const db = client.db("test");
-  const result = await db.collection("test").find().toArray();
-  return result;
+  const docs = await db.collection("test").find().toArray();
+  const jsonDocs = docs.map((doc) => {
+    const { _id, ...rest } = doc;
+    return { id: _id.toString(), ...rest };
+  });
+  // res.json(jsonDocs);
+  return jsonDocs;
 }
 
 export async function getFormList() {
@@ -38,4 +43,4 @@ export async function getHtmlList() {
   return jsonDocs;
 }
 
-export default client.db("test");
+export default client;

@@ -1,6 +1,10 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { CopyBlock, dracula } from "react-code-blocks";
-import { SettingOutlined } from "@ant-design/icons";
+import {
+  SettingOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import {
   Input,
   Row,
@@ -11,19 +15,26 @@ import {
   Tooltip,
   Modal,
   Spin,
+  Empty,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { uuid } from "uuidv4";
 import axios from "@/axios";
 
 export function HtmlInjectionModal(props) {
+  const { apiPath = "/api/list" } = props;
   const [list, setList] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    getList();
+  }, []);
+
   async function getList() {
     dispatch({ type: "TOGGLE_LOADING", isLoading: true });
-    const res = await axios({ method: "GET", url: "/api/list" });
+    const res = await axios({ method: "GET", url: apiPath });
 
     const data = res?.data || [];
     setList(data.map((obj) => ({ ...obj, key: obj._id })));
@@ -34,7 +45,7 @@ export function HtmlInjectionModal(props) {
     dispatch({ type: "TOGGLE_LOADING", isLoading: true });
     const res = await axios({
       method: "PUT",
-      url: "/api/list",
+      url: apiPath,
       data: list,
     });
 
@@ -68,80 +79,115 @@ export function HtmlInjectionModal(props) {
     setList(temp);
   }
 
+  const getHtmlInjectionStr = useCallback(() => {
+    return list.reduce((prev, curr) => {
+      return prev + curr?.value || "" + "\n";
+    }, "");
+  }, [list]);
+
   return (
-    <Modal
-      width={"80%"}
-      centered
-      //   onCancel={() => setIsOpen(false)}
-      //   open={isOpen}
-      {...props}
-      footer={
-        <Button type="primary" onClick={() => onUpdate()}>
-          套用
-        </Button>
-      }
-    >
-      <h2>貼上程式碼區塊</h2>
-      <h3>當前生效程式碼</h3>
-      <Space direction="vertical" size="middle" style={{ display: "flex" }}>
+    <>
+      <Tooltip title="程式碼初始化設定">
+        <Button
+          className="setting-btn"
+          type="primary"
+          shape="circle"
+          icon={<SettingOutlined />}
+          onClick={() => setIsOpen(true)}
+        />
+      </Tooltip>
+      <Modal
+        width={"80%"}
+        centered
+        onCancel={() => setIsOpen(false)}
+        open={isOpen}
+        // {...props}
+        footer={
+          <Button type="primary" onClick={() => onUpdate()}>
+            套用
+          </Button>
+        }
+      >
+        <h2>貼上程式碼區塊</h2>
+        <h3>當前生效程式碼</h3>
         <CopyBlock
           language={"html"}
-          text={htmlInjection}
+          text={getHtmlInjectionStr()}
           showLineNumbers
           theme={dracula}
           wrapLines={true}
           codeBlock
         />
-      </Space>
-      <Divider />
+        <Divider />
 
-      <h3>請貼上程式碼</h3>
-      {list.map((obj, idx) => {
-        return (
-          <Row
-            key={obj.key}
-            align="middle"
-            gutter={[16, 16]}
-            style={{ display: "flex", flexWrap: "nowrap", marginBottom: 16 }}
-          >
-            {/* <Col sm={1}>{idx}</Col> */}
-            <Col
-              style={{
-                flex: "0 100%",
-              }}
-            >
-              <Input.TextArea
-                value={obj.value}
-                onChange={(e) => onChange(e?.target?.value, obj)}
-                style={{ width: "100%" }}
-                autoSize
-              />
-            </Col>
-            <Col>
-              <Space
-                size="small"
-                style={{
-                  display: "flex",
-                  flexWrap: "nowrap",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <Button type="danger" onClick={() => onDelete(obj)}>
-                  刪除
-                </Button>
-              </Space>
-            </Col>
-          </Row>
-        );
-      })}
-      <Button
-        type="primary"
-        onClick={() => onAddItem()}
-        style={{ width: "100%" }}
-      >
-        新增
-      </Button>
-    </Modal>
+        <h3>請貼上程式碼</h3>
+        {list.length ? (
+          <>
+            {list.map((obj) => {
+              return (
+                <Row
+                  key={obj.key}
+                  align="middle"
+                  gutter={[16, 16]}
+                  style={{
+                    display: "flex",
+                    flexWrap: "nowrap",
+                    marginBottom: 16,
+                  }}
+                >
+                  {/* <Col sm={1}>{idx}</Col> */}
+                  <Col
+                    style={{
+                      flex: "0 100%",
+                    }}
+                  >
+                    <Input.TextArea
+                      value={obj.value}
+                      onChange={(e) => onChange(e?.target?.value, obj)}
+                      style={{ width: "100%" }}
+                      autoSize
+                    />
+                  </Col>
+                  <Col>
+                    <Space
+                      size="small"
+                      style={{
+                        display: "flex",
+                        flexWrap: "nowrap",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      {/* <Button type="danger" onClick={() => onDelete(obj)}>
+                        刪除
+                      </Button> */}
+                      <Button
+                        type="danger"
+                        shape="circle"
+                        size="small"
+                        icon={<DeleteOutlined />}
+                        onClick={() => onDelete(obj)}
+                      />
+                    </Space>
+                  </Col>
+                </Row>
+              );
+            })}
+          </>
+        ) : (
+          <Empty />
+        )}
+
+        <Space style={{ justifyContent: "center", width: "100%" }}>
+          <Button
+            type="primary"
+            onClick={() => onAddItem()}
+            style={{ marginTop: 12 }}
+            shape="circle"
+            icon={<PlusOutlined />}
+          ></Button>
+        </Space>
+      </Modal>
+    </>
   );
 }
 

@@ -1,9 +1,7 @@
 import client from "@/db";
-import { ObjectId } from "mongodb";
-
-const db = client.db("test");
 
 export default async function handler(req, res) {
+  const db = client.db("test");
   try {
     switch (req.method) {
       case "GET":
