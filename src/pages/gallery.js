@@ -274,6 +274,8 @@ export default function FormList({ list: propsList = [] }) {
                       })}
                     </Swiper>
                     <ImageFileUpload
+                      list={list}
+                      data={item}
                       onChange={(val) => onFileChange(val, item)}
                     />
                     <Divider />
