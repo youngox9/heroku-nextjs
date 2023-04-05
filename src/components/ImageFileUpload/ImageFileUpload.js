@@ -132,7 +132,7 @@ export default function FormList(props = {}) {
                 <Button
                   shape="circle"
                   icon={<Icon.DeleteOutlined />}
-                  onClick={() => onRemoveImage(item, idx)}
+                  onClick={() => onRemoveImage(idx)}
                 />
                 <img src={src} alt="1" style={{ width: "100%" }} />
               </div>
