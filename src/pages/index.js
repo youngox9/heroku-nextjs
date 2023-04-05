@@ -1,20 +1,5 @@
-import React, { Fragment, useEffect, useState, useCallback } from "react";
-import { CopyBlock, dracula } from "react-code-blocks";
-import { SettingOutlined } from "@ant-design/icons";
-import {
-  Input,
-  Row,
-  Col,
-  Button,
-  Space,
-  Divider,
-  Tooltip,
-  Modal,
-  Spin,
-} from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { uuid } from "uuidv4";
-import axios from "@/axios";
+import React, { Fragment, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import HtmlInjectionModal from "@/components/HtmlInjectionModal";
 
 export function Main({ htmlList = [] }) {

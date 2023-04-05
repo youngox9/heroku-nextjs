@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useCallback } from "react";
-import { CopyBlock, dracula } from "react-code-blocks";
+// import { CopyBlock, dracula } from "react-code-blocks";
 import {
   SettingOutlined,
   PlusOutlined,
@@ -110,14 +110,14 @@ export function HtmlInjectionModal(props) {
       >
         <h2>貼上程式碼區塊</h2>
         <h3>當前生效程式碼</h3>
-        <CopyBlock
+        {/* <CopyBlock
           language={"html"}
           text={getHtmlInjectionStr()}
           showLineNumbers
           theme={dracula}
           wrapLines={true}
           codeBlock
-        />
+        /> */}
         <Divider />
 
         <h3>請貼上程式碼</h3>

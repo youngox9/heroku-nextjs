@@ -1,9 +1,8 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { CopyBlock, dracula } from "react-code-blocks";
+
 import {
   PlusOutlined,
   DeleteOutlined,
-  MinusOutlined,
   MinusCircleOutlined,
   ClearOutlined,
 } from "@ant-design/icons";
