@@ -1,4 +1,12 @@
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import Head from "next/head";
 
 import {
   PlusOutlined,
@@ -35,7 +43,17 @@ const FIELD_TYPES = [
 ];
 
 function DynamicField(props = {}) {
-  const { value, onChange, fieldtype, name } = props;
+  const { value, onChange, fieldtype, name, key } = props;
+  const ref = useRef();
+
+  useEffect(() => {
+    console.log(ref.current);
+    const input = ref?.current?.input;
+    if (input) {
+      console.log(input);
+      input.setAttribute("name", name);
+    }
+  }, []);
   if (fieldtype === "select") {
     return (
       <Select
@@ -70,38 +88,53 @@ function DynamicField(props = {}) {
     );
   } else if (fieldtype === "radio") {
     return (
-      <Radio.Group
-        {...props}
-        id={name}
-        name={name}
-        size="small"
-        onChange={(e) => {
-          onChange(e.target.value);
-        }}
-        value={value}
-        options={[1, 2]}
-      >
-        {/* <Radio value={1}>A</Radio>
-        <Radio value={2}>B</Radio> */}
-      </Radio.Group>
+      // <Radio.Group
+      //   {...props}
+      //   id={name}
+      //   name={name}
+      //   size="small"
+      //   onChange={(e) => {
+      //     onChange(e.target.value);
+      //   }}
+      //   value={value}
+      //   options={[1, 2]}
+      // >
+      //   {/* <Radio value={1}>A</Radio>
+      //   <Radio value={2}>B</Radio> */}
+      // </Radio.Group>
+      <div>
+        <input type="radio" id={`${key}-1`} name={name} value="A" />
+        <label htmlFor={`${key}-1`}>A</label>
+
+        <input type="radio" id={`${key}-2`} name={name} value="B" />
+        <label htmlFor={`${key}-2`}>B</label>
+
+        <input type="radio" id={`${key}-3`} name={name} value="C" />
+        <label htmlFor={`${key}-3`}>C</label>
+      </div>
     );
   } else if (fieldtype === "checkbox") {
     return (
-      <Checkbox
-        {...props}
-        id={name}
-        name={name}
-        onChange={(e) => {
-          onChange(e.target.checked);
-        }}
-      >
-        Checkbox
-      </Checkbox>
+      // <Checkbox
+      //   {...props}
+      //   id={name}
+      //   name={name}
+      //   onChange={(e) => {
+      //     onChange(e.target.checked);
+      //   }}
+      // >
+      //   Checkbox
+      // </Checkbox>
+      <label htmlFor={`${key}`}>
+        <input type="checkbox" id={`${key}`} name={name} value="C" />
+      </label>
     );
   }
   return (
-    <Input
+    <input
       {...props}
+      type="text"
+      ref={ref}
       id={name}
       name={name}
       value={value}
@@ -127,16 +160,10 @@ function BlurInput(props = {}) {
     />
   );
 }
-export default function FormList({ formList = [], htmlList = [] }) {
+export default function FormList({ formList = [] }) {
   const [list, setList] = useState(formList);
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-
-  const getHtmlInjectionStr = useCallback(() => {
-    return htmlList.reduce((prev, curr) => {
-      return prev + curr?.value || "";
-    }, "");
-  }, [htmlList]);
 
   async function onUpdate(newList) {
     await axios({
@@ -236,6 +263,9 @@ export default function FormList({ formList = [], htmlList = [] }) {
   }
   return (
     <Fragment>
+      <Head>
+        <title>動態表單測試</title>
+      </Head>
       <h2>動態表單測試</h2>
 
       <Space
@@ -410,8 +440,6 @@ export default function FormList({ formList = [], htmlList = [] }) {
         <Empty />
       )}
       <HtmlInjectionModal apiPath="/api/form/html" />
-
-      <div dangerouslySetInnerHTML={{ __html: getHtmlInjectionStr() }}></div>
     </Fragment>
   );
 }

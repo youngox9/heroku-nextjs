@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useCallback } from "react";
-// import { CopyBlock, dracula } from "react-code-blocks";
+import { CopyBlock, dracula } from "react-code-blocks";
 import {
   SettingOutlined,
   PlusOutlined,
@@ -87,6 +87,7 @@ export function HtmlInjectionModal(props) {
 
   return (
     <>
+      <div dangerouslySetInnerHTML={{ __html: getHtmlInjectionStr() }}></div>
       <Tooltip title="程式碼初始化設定">
         <Button
           className="setting-btn"
@@ -110,14 +111,14 @@ export function HtmlInjectionModal(props) {
       >
         <h2>貼上程式碼區塊</h2>
         <h3>當前生效程式碼</h3>
-        {/* <CopyBlock
+        <CopyBlock
           language={"html"}
           text={getHtmlInjectionStr()}
           showLineNumbers
           theme={dracula}
           wrapLines={true}
           codeBlock
-        /> */}
+        />
         <Divider />
 
         <h3>請貼上程式碼</h3>
@@ -133,6 +134,7 @@ export function HtmlInjectionModal(props) {
                     display: "flex",
                     flexWrap: "nowrap",
                     marginBottom: 16,
+                    alignItems: "flex-start",
                   }}
                 >
                   {/* <Col sm={1}>{idx}</Col> */}
@@ -144,7 +146,11 @@ export function HtmlInjectionModal(props) {
                     <Input.TextArea
                       value={obj.value}
                       onChange={(e) => onChange(e?.target?.value, obj)}
-                      style={{ width: "100%" }}
+                      style={{
+                        width: "100%",
+                        backgroundColor: "black",
+                        color: "white",
+                      }}
                       autoSize
                     />
                   </Col>
@@ -184,6 +190,7 @@ export function HtmlInjectionModal(props) {
             style={{ marginTop: 12 }}
             shape="circle"
             icon={<PlusOutlined />}
+            size="large"
           ></Button>
         </Space>
       </Modal>

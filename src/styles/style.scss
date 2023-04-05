@@ -1,4 +1,5 @@
 @import "antd/dist/antd.css";
+@import "swiper/css";
 
 html,
 body {
@@ -32,6 +33,19 @@ body {
   background-color: rgba(0, 0, 0, 0.6);
   background: url("/images/loading.svg") rgba(0, 0, 0, 0.6) center/64px
     no-repeat;
+}
+
+.gallery-swiper {
+  .gallery-item {
+    .ant-btn {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+    }
+    img {
+      width: 100%;
+    }
+  }
 }
 
 .side-menu {

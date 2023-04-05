@@ -43,4 +43,15 @@ export async function getHtmlList() {
   return jsonDocs;
 }
 
+export async function getData(dbName) {
+  const db = client.db(dbName);
+  const docs = await db.collection("list").find().toArray();
+  const jsonDocs = docs.map((doc) => {
+    const { _id, ...rest } = doc;
+    return { id: _id.toString(), ...rest };
+  });
+  // res.json(jsonDocs);
+  return jsonDocs;
+}
+
 export default client;

@@ -15,8 +15,6 @@ export function Main({ htmlList = [] }) {
     <Fragment>
       <h2>程式碼片段初始化測試</h2>
       <HtmlInjectionModal />
-
-      <div dangerouslySetInnerHTML={{ __html: getHtmlInjectionStr() }}></div>
     </Fragment>
   );
 }
