@@ -1,7 +1,9 @@
 {
-  "extends": [
-    "next",
-    "eslint:recommended"
-    // "plugin:react/recommended"
-  ]
+  "extends": ["next", "eslint:recommended", "plugin:react/recommended"],
+  "rules": {
+    // maybe your other rules...
+    "no-unused-vars": "warn",
+    "react/prop-types": "off",
+    "no-case-declarations": "off"
+  }
 }

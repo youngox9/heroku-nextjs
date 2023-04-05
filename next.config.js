@@ -9,4 +9,4 @@ const nextConfig = {
   ...(isDev ? DEV_CONFIG : PRD_CONFIG),
 };
 
-module.exports = {};
+module.exports = nextConfig;
