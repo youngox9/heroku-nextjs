@@ -5,6 +5,7 @@ console.log("isDev", isDev);
 const DEV_CONFIG = {};
 
 const PRD_CONFIG = {
+  output: "standalone",
   compress: true,
 };
 const nextConfig = {
