@@ -86,30 +86,10 @@ export default function FormList({ list: propsList = [] }) {
     onUpdate(newList);
   }
 
-  function onRemoveForm(form) {
+  function onDeleteItem(item) {
     const newList = list.reduce((prev, curr) => {
-      if (form.key === curr.key) {
+      if (item.key === curr.key) {
         return [...prev];
-      }
-      return [...prev, curr];
-    }, []);
-    setList(newList);
-    onUpdate(newList);
-  }
-
-  function onRemoveField(form, field) {
-    const newList = list.reduce((prev, curr) => {
-      if (form.key === curr.key) {
-        return [
-          ...prev,
-          {
-            ...curr,
-            fields: curr.fields.reduce((p, c) => {
-              if (field.key === c.key) return p;
-              return [...p, c];
-            }, []),
-          },
-        ];
       }
       return [...prev, curr];
     }, []);
@@ -123,58 +103,10 @@ export default function FormList({ list: propsList = [] }) {
     onUpdate(temp);
   }
 
-  function getBase64(file) {
-    // eslint-disable-next-line no-undef
-    return new Promise((resolve, reject) => {
-      var reader = new FileReader();
-      console.log(file);
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        const img = new Image();
-        img.src = reader.result;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.drawImage(img, 0, 0, img.width, img.height);
-          const base64 = canvas.toDataURL("image/jpeg", 0.6);
-          resolve(base64);
-        };
-      };
-      reader.onerror = function (error) {
-        console.log("Error: ", error);
-        reject(error);
-      };
-    });
-  }
-
-  async function onFileChange(val, item) {
+  function onItemChange(data = {}, item) {
     const newList = list.reduce((prev, curr) => {
       if (curr.key === item.key) {
-        return [...prev, { ...curr, images: [...curr.images, val] }];
-      }
-      return [...prev, curr];
-    }, []);
-    setList(newList);
-    onUpdate(newList);
-  }
-
-  async function onRemoveImage(item, imageIdx) {
-    const newList = list.reduce((prev, curr) => {
-      if (curr.key === item.key) {
-        return [
-          ...prev,
-          {
-            ...curr,
-            images: curr.images.reduce((p, c, idx) => {
-              if (idx === imageIdx) {
-                return p;
-              }
-              return [...p, c];
-            }, []),
-          },
-        ];
+        return [...prev, data];
       }
       return [...prev, curr];
     }, []);
@@ -217,15 +149,16 @@ export default function FormList({ list: propsList = [] }) {
           {list.map((item, idx) => {
             const { name } = item;
             return (
-              <Col key={item.key} span={12}>
+              <Col key={item.key} span={6}>
                 <div>
                   <Divider />
 
                   <Card
+                    size="small"
                     title={
                       <BlurInput
+                        size="small"
                         value={name}
-                        size="large"
                         onChange={(val) => onFormNameChange(idx, val)}
                       />
                     }
@@ -242,14 +175,14 @@ export default function FormList({ list: propsList = [] }) {
                           shape="circle"
                           size="small"
                           icon={<Icon.DeleteOutlined />}
-                          onClick={() => onRemoveForm(item)}
+                          onClick={() => onDeleteItem(item)}
                         />
                       </Space>
                     }
                     style={{ width: "100%" }}
                   >
                     <p>作品圖片</p>
-                    <Swiper
+                    {/* <Swiper
                       className="gallery-swiper"
                       spaceBetween={50}
                       slidesPerView={1}
@@ -272,11 +205,11 @@ export default function FormList({ list: propsList = [] }) {
                           </SwiperSlide>
                         );
                       })}
-                    </Swiper>
+                    </Swiper> */}
                     <ImageFileUpload
                       list={list}
                       data={item}
-                      onChange={(val) => onFileChange(val, item)}
+                      onChange={(data) => onItemChange(data, item)}
                     />
                     <Divider />
                     <Slate editor={editor} value={item?.des || []}>

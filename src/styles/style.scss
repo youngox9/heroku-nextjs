@@ -37,11 +37,12 @@ body {
 
 .gallery-swiper {
   .gallery-item {
-    .ant-btn {
+    .gallery-control {
       position: absolute;
       right: 12px;
       top: 12px;
     }
+
     img {
       width: 100%;
     }

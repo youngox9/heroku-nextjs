@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { CopyBlock, dracula } from "react-code-blocks";
 import {
   SettingOutlined,
@@ -14,16 +14,15 @@ import {
   Divider,
   Tooltip,
   Modal,
-  Spin,
   Empty,
 } from "antd";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { uuid } from "uuidv4";
 import axios from "@/axios";
 
 export function HtmlInjectionModal(props) {
-  const { apiPath = "/api/list" } = props;
-  const [list, setList] = useState([]);
+  const { apiPath = "/api/list", htmlList = [] } = props;
+  const [list, setList] = useState(htmlList);
   const [isOpen, setIsOpen] = useState(false);
 
   const dispatch = useDispatch();

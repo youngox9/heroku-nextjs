@@ -7,6 +7,8 @@ const uri = `mongodb+srv://youngox9:${pws}@cluster0.vlupstz.mongodb.net/?retryWr
 export const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 10000,
 });
 
 // const db = client.db("test");
@@ -43,9 +45,9 @@ export async function getHtmlList() {
   return jsonDocs;
 }
 
-export async function getData(dbName) {
+export async function getData(dbName, collectionName = "list") {
   const db = client.db(dbName);
-  const docs = await db.collection("list").find().toArray();
+  const docs = await db.collection(collectionName).find().toArray();
   const jsonDocs = docs.map((doc) => {
     const { _id, ...rest } = doc;
     return { id: _id.toString(), ...rest };

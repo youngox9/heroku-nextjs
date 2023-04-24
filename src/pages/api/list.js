@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     switch (req.method) {
       case "GET":
         const result = await db.collection("test").find().toArray();
-        console.log(result);
+
         res.status(200).json(result);
         break;
       case "PUT":

@@ -5,16 +5,10 @@ import HtmlInjectionModal from "@/components/HtmlInjectionModal";
 export function Main({ htmlList = [] }) {
   const dispatch = useDispatch();
 
-  const getHtmlInjectionStr = useCallback(() => {
-    return htmlList.reduce((prev, curr) => {
-      return prev + curr?.value || "";
-    }, "");
-  }, [htmlList]);
-
   return (
     <Fragment>
       <h2>程式碼片段初始化測試</h2>
-      <HtmlInjectionModal />
+      <HtmlInjectionModal htmlList={htmlList} />
     </Fragment>
   );
 }
